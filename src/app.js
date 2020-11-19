@@ -2,6 +2,8 @@ const path = require('path');
 
 const express = require('express');
 
+const hbs = require('hbs');
+
 const app = express()
 
 console.log(__dirname);
@@ -10,9 +12,19 @@ console.log(__dirname);
 console.log(path.join(__dirname, '../public'));
 
 const publicDirectory = path.join(__dirname, '../public');
+const view_path = path.join(__dirname, '../templates/views');
+const partial_path = path.join(__dirname, '../templates/partials');
 
 app.set('view engine', 'hbs')
+app.set('views', view_path);
+
+hbs.registerPartials(partial_path);
+
 app.use(express.static(publicDirectory));
+
+// 1-setup the template for the footer partial "created by some name"
+// 2. Render the partial at te bottom of all three pages
+
 
 /*
 app.get('', (req, res) => {
