@@ -1,29 +1,36 @@
 const path = require('path');
-
 const express = require('express');
-
 const hbs = require('hbs');
 
+// Creates an express object
 const app = express()
 
+// Gets the currentyle dir name
 console.log(__dirname);
-// console.log(__filename);
+//console.log(path.join(__dirname, '../public'));
 
-console.log(path.join(__dirname, '../public'));
-
+// Configure the express paths
 const publicDirectory = path.join(__dirname, '../public');
 const view_path = path.join(__dirname, '../templates/views');
 const partial_path = path.join(__dirname, '../templates/partials');
 
+// Set the engines views
 app.set('view engine', 'hbs')
 app.set('views', view_path);
 
+// Configure the partials hbs
 hbs.registerPartials(partial_path);
 
+// Configures the static files with express static
 app.use(express.static(publicDirectory));
 
-// 1-setup the template for the footer partial "created by some name"
-// 2. Render the partial at te bottom of all three pages
+
+app.get('/testit', (req, res) => {
+    res.send({
+        shopName: 'sportzone',
+        shopLimitPer: 25
+    })
+})
 
 
 /*
@@ -35,7 +42,7 @@ app.get('', (req, res) => {
 app.get('', (req, res) => {
     res.render('index', {
         title: 'Weather App',
-        name: 'Tanjil Khan',
+        name: 'Bart',
     });
 });
 
@@ -50,6 +57,13 @@ app.get('/weather', (req, res) => {
     res.send({
         forecast: 'No raining! Nice!',
         location: 'Porto',
+    })
+})
+
+app.get('/itsmemario', (req, res) => {
+    res.render('mario', {
+        message: 'Quando o Gouveia é penta campeao nas faltas disciplinares',
+        name: 'Me, MARIO!'
     })
 })
 
@@ -69,6 +83,14 @@ app.get('/people', (req, res) => {
         },
     ])
 });
+
+app.get('/help/*', (req, res) => {
+    res.send('Bart could not help you... He didnt found anything!');
+})
+
+app.get('*', (req, res) => {
+    res.send('Sorry, but this page doesnt exists, please double check it! :|');
+})
 
 app.listen(3000, () => {
     console.log('Running the app in 3000.');
