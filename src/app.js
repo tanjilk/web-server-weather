@@ -85,12 +85,16 @@ app.get('/people', (req, res) => {
 });
 
 app.get('/help/*', (req, res) => {
-    res.send('Bart could not help you... He didnt found anything!');
-})
+    res.render('error404bart', {
+        message: 'Bart could not get it... No page found! :|',
+        name: 'Bart'
+    });
+});
 
 app.get('*', (req, res) => {
     res.send('Sorry, but this page doesnt exists, please double check it! :|');
-})
+});
+
 
 app.listen(3000, () => {
     console.log('Running the app in 3000.');
