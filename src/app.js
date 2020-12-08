@@ -60,12 +60,34 @@ app.get('/help', (req, res) => {
     })
 })
 
-app.get('/weather', (req, res) => {
+
+app.get('/products', (req, res) => {
+    if(!req.query.search){
+        return res.send({
+            error: 'You must provide a search term!'
+        })
+    }
+
+    console.log(req.query);
     res.send({
-        forecast: 'No raining! Nice!',
-        location: 'Porto',
+        products: []
     })
 })
+
+
+app.get('/weather', (req,res) => {
+    if(!req.query.search){
+        return res.send({
+            error: 'You must provide an address!'
+        })
+    }
+
+    res.send({
+        local: req.query.search
+    })
+})
+
+
 
 app.get('/itsmemario', (req, res) => {
     res.render('mario', {
