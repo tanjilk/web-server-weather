@@ -42,14 +42,21 @@ app.get('', (req, res) => {
 app.get('', (req, res) => {
     res.render('index', {
         title: 'Weather App',
-        name: 'Bart',
+        name: 'Khan',
     });
 });
 
+app.get('about', (req, res) => {
+    res.render('about', {
+        title: 'About page',
+        name: 'Khan'
+    })
+})
+
 app.get('/help', (req, res) => {
     res.render('help', {
-        message: 'The help message',
-        name: 'Bart'
+        message: 'Try to search the solution to your problem on this page!',
+        name: 'Khan'
     })
 })
 
@@ -92,7 +99,10 @@ app.get('/help/*', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-    res.send('Sorry, but this page doesnt exists, please double check it! :|');
+    //res.send('Sorry, but this page doesnt exists, please double check it! :|');
+    res.render('error404', {
+        message: 'Page not found'
+    })
 });
 
 
