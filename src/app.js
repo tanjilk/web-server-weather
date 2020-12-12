@@ -2,6 +2,9 @@ const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
 
+const forecast = require('./utils/geofor/forecast');
+const geocode = require('./utils/geofor/geocode');
+
 // Creates an express object
 const app = express()
 
@@ -62,7 +65,7 @@ app.get('/help', (req, res) => {
 
 
 app.get('/products', (req, res) => {
-    if(!req.query.search){
+    if (!req.query.search) {
         return res.send({
             error: 'You must provide a search term!'
         })
@@ -75,16 +78,28 @@ app.get('/products', (req, res) => {
 })
 
 
-app.get('/weather', (req,res) => {
-    if(!req.query.search){
+app.get('/weather', (req, res) => {
+    if (!req.query.search)
         return res.send({
             error: 'You must provide an address!'
-        })
-    }
+        });
 
-    res.send({
-        local: req.query.search
+    geocode(req.query.search, {}).then(data => {
+        
+        forecast(data.latitude, data.longitude, (error, datafor) => {
+
+            res.send({
+                place: data.place_name,
+                temperature: datafor.temperature,
+                pressure: datafor.pressure,
+                humidity: datafor.humidity,
+                weather_main: datafor.weather_main
+            });
+        })
+    }).catch(error => {
+        res.send(error);
     })
+
 })
 
 
